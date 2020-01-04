@@ -1,0 +1,59 @@
+﻿<UserControl x:Class="PrismSAM.Modules.SWP.Views.SpetrumView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:prism="http://prismlibrary.com/"
+             xmlns:ig="http://schemas.infragistics.com/xaml"
+             xmlns:igwpf="http://schemas.infragistics.com/xaml/wpf"
+             xmlns:local="clr-namespace:PrismSAM.Modules.SWP.ViewModels"
+             prism:ViewModelLocator.AutoWireViewModel="True"
+             
+                >
+    <DockPanel LastChildFill="True">
+        <StackPanel DockPanel.Dock="Bottom" MinHeight="100">
+            <Button Content="Apply" Command="{Binding ApplyCommand}"
+                    Padding="5" Margin="15" Width="100"/>
+            <TextBlock Text="{Binding operationStatus}"/>
+        </StackPanel>
+        <Grid DockPanel.Dock="Top" MinWidth="630">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <StackPanel Grid.Row="0">
+                <TextBlock Text="Prism" Margin="20,10,0,0"/>
+                <TextBlock Text="Spectrum Analyzer" Margin="20,0,0,0" FontSize="20" Foreground="Black"/>
+            </StackPanel>
+            
+            <ig:XamDataChart x:Name="Chart1" Grid.Row="1"
+                             Margin="15,20,15,0" 
+                             DefaultInteraction="DragPan"
+                             IsHorizontalZoomEnabled="True"
+                             Title="{Binding chartTitle}">
+                <ig:XamDataChart.DataContext>
+                    <local:SpetrumViewModel/>
+                </ig:XamDataChart.DataContext>
+                <ig:XamDataChart.Axes>
+                    <ig:NumericXAxis x:Name="xAxis"
+                                     MinimumValue="{Binding freqStart}"
+                                     MaximumValue="{Binding freqStop}"
+                                      />
+                    <ig:NumericYAxis x:Name="yAxis" 
+                                     MinimumValue="-100"
+                                     MaximumValue="0"/>
+                    
+                </ig:XamDataChart.Axes>
+                <ig:XamDataChart.Series>
+                    <ig:ScatterLineSeries Thickness="2"
+                                          MarkerType="None"
+                                          Title="{Binding chartTitle}"
+                                   ItemsSource="{Binding dummyData}"
+                                   YMemberPath="Y"
+                                   XMemberPath="X"
+                                   XAxis="{Binding ElementName=xAxis}"
+                                   YAxis="{Binding ElementName=yAxis}"
+                                   ></ig:ScatterLineSeries>
+                </ig:XamDataChart.Series>
+            </ig:XamDataChart>
+        </Grid>
+    </DockPanel>
+</UserControl>
