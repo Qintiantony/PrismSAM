@@ -21,7 +21,8 @@ namespace PrismSAM.Core
         public static extern int SWP_GetPartialSweep(ref IntPtr pSA, double[] Frequency, double[] Amplitude, ref int PackageIndex);
 
         public static SWPParam_Typedef swpParamInfo = new SWPParam_Typedef();
-        public static SWP_TypeDef swpConfig = new SWP_TypeDef() {
+        public static SWP_TypeDef swpConfig = new SWP_TypeDef();
+        public static SWP_TypeDef swpDefaultConfig = new SWP_TypeDef() {
             // Initial SWP configuration
             Detector = DetMode_TypeDef.PosPeak,
             PerformanceRate = 0,
@@ -59,6 +60,7 @@ namespace PrismSAM.Core
             int op_status;
             if (DeviceConnection.pSA != IntPtr.Zero)
             {
+                swpConfig = swpDefaultConfig;
                 op_status = SWP_Configuration(ref DeviceConnection.pSA, ref swpConfig);
                 Get_SWP_Info();
             }
