@@ -38,6 +38,7 @@
                     <KeyBinding Key="Return" Command="{Binding UpdateFreqStartCommand}"/>
                 </ig:XamNumericInput.InputBindings>
             </ig:XamNumericInput>
+            <TextBlock Grid.Column="3" Text="{Binding freqStart}"/>
             <TextBlock Grid.Column="2" 
                        Text="MHz" 
                        Margin="5"
@@ -70,18 +71,18 @@
                 <TextBlock Text="Prism" Margin="20,10,0,0"/>
                 <TextBlock Text="Spectrum Analyzer" Margin="20,0,0,0" FontSize="20" Foreground="Black"/>
             </StackPanel>
-            
+
             <ig:XamDataChart x:Name="Chart1" Grid.Row="1"
-                             Margin="15,20,15,0" 
-                             DefaultInteraction="DragPan"
-                             IsHorizontalZoomEnabled="True"
-                             Title="{Binding chartTitle}">
+                             Margin="15,20,15,0" >
+                <!--DefaultInteraction="DragPan"
+                             IsHorizontalZoomEnabled="True"                            
+                             Title="{Binding chartTitle}">-->
                 <ig:XamDataChart.DataContext>
                     <local:SpetrumViewModel/>
                 </ig:XamDataChart.DataContext>
                 <ig:XamDataChart.Axes>
                     <ig:NumericXAxis x:Name="xAxis"
-                                     MinimumValue="{Binding freqStart, UpdateSourceTrigger=PropertyChanged}"
+                                     MinimumValue="{Binding freqStart}"
                                      MaximumValue="{Binding freqStop}"
                                      Title="Frequency [MHz]"
                                       />

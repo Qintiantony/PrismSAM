@@ -28,14 +28,14 @@ namespace PrismSAM.Modules.SWP.ViewModels
             set { SetProperty(ref _operationStatus, value); }
         }
 
-        private double _freqStart = SweepMode.swpConfig.StartFreq_Hz;
+        private double _freqStart;
         public double freqStart
         {
             get { return _freqStart; }
             set { SetProperty(ref _freqStart, value); }
         }
 
-        private double _freqStop = SweepMode.swpConfig.StopFreq_Hz;
+        private double _freqStop;
         public double freqStop
         {
             get { return _freqStop; }
