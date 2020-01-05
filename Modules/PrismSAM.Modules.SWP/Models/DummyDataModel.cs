@@ -79,7 +79,7 @@ namespace PrismSAM.Modules.SWP.Models
                     this.RemoveItem((int)pack_index * det_points + i);
                     this.InsertItem((int)pack_index * det_points + i, new DummyDataPoint
                     {
-                        X = SweepMode.freqs[i],
+                        X = SweepMode.freqs[i]/1e6, //Convert freq in Hz to MHz
                         Y = SweepMode.amps[i]
                     });
                     //this.Add(new DummyDataPoint

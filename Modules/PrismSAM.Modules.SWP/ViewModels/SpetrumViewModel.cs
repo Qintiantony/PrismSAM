@@ -6,6 +6,7 @@ using PrismSAM.Modules.SWP.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Input;
 using static PrismSAM.Core.Declaration;
 
 namespace PrismSAM.Modules.SWP.ViewModels
@@ -40,18 +41,30 @@ namespace PrismSAM.Modules.SWP.ViewModels
             get { return _freqStop; }
             set { SetProperty(ref _freqStop, value); }
         }
+
+        private double _freqStartTextbox;
+        public double freqStartTextbox
+        {
+            get { return _freqStartTextbox; }
+            set { SetProperty(ref _freqStartTextbox, value); }
+        }
         #endregion
 
         public SpetrumViewModel()
         {
             dummyData = new DummyDataModel();
             ApplyCommand = new DelegateCommand(ApplyConfiguration);
+            UpdateFreqStartCommand = new DelegateCommand(UpdateFreqStart);
+            freqStart = SweepMode.swpDefaultConfig.StartFreq_Hz/1e6;
+            freqStop = SweepMode.swpDefaultConfig.StopFreq_Hz/1e6;
+            freqStartTextbox = freqStart;
         }
 
         
 
         #region Commands
         public DelegateCommand ApplyCommand { get; private set; }
+        public DelegateCommand UpdateFreqStartCommand { get; private set; }
         #endregion
 
         #region Command Methods
@@ -67,13 +80,20 @@ namespace PrismSAM.Modules.SWP.ViewModels
             int opcode = SweepMode.Initialize_SWP_Standard();
             //SweepMode.Get_SWP_Info();
             //dummyData.GenerateData(SweepMode.swpParamInfo.TracePoints);
-            freqStart = SweepMode.swpConfig.StartFreq_Hz;
-            freqStop = SweepMode.swpConfig.StopFreq_Hz;
+            freqStart = SweepMode.swpConfig.StartFreq_Hz/1e6;
+            freqStop = SweepMode.swpConfig.StopFreq_Hz/1e6;
             //dummyData.updateTimer.Start();
             //dummyData.isSWP_Configured = true;
             operationStatus = opcode.ToString();
-
         }
+
+        private void UpdateFreqStart()
+        {
+            freqStart = freqStartTextbox;
+        }
+        #endregion
+        #region Event Handlers
+        
         #endregion
 
 
