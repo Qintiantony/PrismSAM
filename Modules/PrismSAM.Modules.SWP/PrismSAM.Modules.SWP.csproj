@@ -50,6 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\DummyDataModel.cs" />
+    <Compile Include="Models\GetSweepDataModel.cs" />
     <Compile Include="SWPModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>

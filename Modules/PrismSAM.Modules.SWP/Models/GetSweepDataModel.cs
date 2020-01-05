@@ -9,7 +9,7 @@ using System.Windows.Threading;
 
 namespace PrismSAM.Modules.SWP.Models
 {
-    public class DummyDataModel : ObservableCollection<DummyDataPoint>
+    public class GetSweepDataModel : ObservableCollection<SweepDataPoint>
     {
         #region Properties
         public static Random Rand = new Random();
@@ -22,10 +22,9 @@ namespace PrismSAM.Modules.SWP.Models
             get { return _updateInterval; }
             set { _updateInterval = value; }
         }
-
         #endregion
         #region Constructor
-        public DummyDataModel()
+        public GetSweepDataModel()
         {
             // Initialize update timer
             updateInterval = TimeSpan.FromMilliseconds(10);
@@ -39,46 +38,54 @@ namespace PrismSAM.Modules.SWP.Models
         #region Methods
         private void UpdateData(object sender, EventArgs e)
         {
-            this.FetchData();
+            if (DeviceConnection.pSA != IntPtr.Zero)
+            {
+                this.FetchData();
+            }
+
         }
 
         public void GenerateData(int tracepoints)
         {
-            double value = 50;
             for (int i = 0; i < tracepoints; i++)
             {
-                double change = Rand.NextDouble();
-                if (change > 0.5)
-                {
-                    value += (int)(change * 20);
-                }
-                else
-                {
-                    value -= (int)(change * 20);
-                }
-                value = value % 100 - 50;
-                this.Add(new DummyDataPoint
+                this.Add(new SweepDataPoint
                 {
                     X = (double)i,
-                    Y = (double) value
+                    Y = 0
                 });
             }
         }
+
         public void FetchData()
         {
             this.Clear();
             GenerateData(SweepMode.swpParamInfo.TracePoints);
+            do
+            {
+                SweepMode.Get_SWP_Data();
+                int pack_index = SweepMode.packIndex;
+                int det_points = SweepMode.swpParamInfo.DetPoints;
+                for (int i = 0; i < SweepMode.swpParamInfo.DetPoints; i++)
+                {
+                    this.RemoveItem((int)pack_index * det_points + i);
+                    this.InsertItem((int)pack_index * det_points + i, new SweepDataPoint
+                    {
+                        X = SweepMode.freqs[i] / 1e6, //Convert freq in Hz to MHz
+                        Y = SweepMode.amps[i]
+                    });
+                }
+            }
+            while (SweepMode.packIndex != 0);
         }
- 
         #endregion
     }
 
-    public class DummyDataPoint
+    public class SweepDataPoint
     {
         #region Properties
         public double X { get; set; }
         public double Y { get; set; }
-
         #endregion
     }
 }
