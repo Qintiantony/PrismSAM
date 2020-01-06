@@ -9,16 +9,17 @@
              
                 >
     <DockPanel LastChildFill="True">
-        <Grid DockPanel.Dock="Bottom" MinHeight="200" Margin="70,15,0,0">
+        <Grid DockPanel.Dock="Bottom" MinHeight="200" Margin="70,15,15,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="100"/>
                 <ColumnDefinition Width="100"/>
                 <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="2*"/>
-                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="100"/>
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
@@ -27,18 +28,17 @@
                        Text="Frequency start: " 
                        Margin="5"
                        VerticalAlignment="Center"/>
-            <ig:XamNumericInput Text="{Binding freqStartTextbox}" 
+            <ig:XamNumericInput Value="{Binding freqStartTextbox}" 
                                 x:Name ="FreqStartTexbox"
                                 Grid.Column="1" 
                                 HorizontalAlignment="Stretch"
                                 Mask="nnnn.nnnnnn"
                                 PadChar=""
                                 Margin="5">
-                <ig:XamNumericInput.InputBindings>
+                <!--<ig:XamNumericInput.InputBindings>
                     <KeyBinding Key="Return" Command="{Binding UpdateFreqStartCommand}"/>
-                </ig:XamNumericInput.InputBindings>
+                </ig:XamNumericInput.InputBindings>-->
             </ig:XamNumericInput>
-            <TextBlock Grid.Column="3" Text="{Binding freqStart}"/>
             <TextBlock Grid.Column="2" 
                        Text="MHz" 
                        Margin="5"
@@ -48,18 +48,62 @@
                        Text="Frequency stop: " 
                        Margin="5"
                        VerticalAlignment="Center"/>
-            <ig:XamNumericInput Text="50" Grid.Column="1" Grid.Row="1"
+            <ig:XamNumericInput Value="{Binding freqStopTextbox}" 
+                                x:Name ="FreqStopTexbox"
+                                Grid.Column="1" Grid.Row="1"
                                 HorizontalAlignment="Stretch"
                                 Mask="nnnn.nnnnnn"
                                 PadChar=""
-                                
                                 Margin="5"/>
             <TextBlock Grid.Column="2" Grid.Row="1" 
                        Text="MHz" 
                        Margin="5"
                        VerticalAlignment="Center"/>
-            <Button Content="Apply" Command="{Binding ApplyCommand}"
-                    Padding="5" Margin="15" Width="100" Grid.Row="2"/>
+
+            <TextBlock Grid.Column="3" 
+                       Grid.Row="0"
+                       Text="Reference top:" 
+                       Margin="5"
+                       VerticalAlignment="Center"/>
+            <ig:XamNumericInput Value="{Binding referenceTop}" 
+                                Grid.Column="4" Grid.Row="0"
+                                x:Name="ReferenceTopTextbox"
+                                HorizontalAlignment="Stretch"
+                                Mask="-nnn.nnnnnn"
+                                PadChar=""
+                                Margin="5"/>
+            <TextBlock Grid.Column="5" Grid.Row="0" 
+                       Text="dBm" 
+                       Margin="5"
+                       VerticalAlignment="Center"/>
+
+            <TextBlock Grid.Column="3" 
+                       Grid.Row="1"
+                       Text="Reference top:" 
+                       Margin="5"
+                       VerticalAlignment="Center"/>
+            <ig:XamNumericInput Value="{Binding referenceBottom}" 
+                                Grid.Column="4" Grid.Row="1"
+                                x:Name="ReferenceBottomTextbox"
+                                HorizontalAlignment="Stretch"
+                                Mask="-nnn.nnnnnn"
+                                PadChar=""
+                                Margin="5"/>
+            <TextBlock Grid.Column="5" Grid.Row="1" 
+                       Text="dBm" 
+                       Margin="5"
+                       VerticalAlignment="Center"/>
+            
+
+            <Button Content="Apply X Configuration" Command="{Binding ApplyCommand}"
+                    Grid.ColumnSpan="3"
+                    Padding="5" Margin="15" Width="180" Grid.Row="2"/>
+            <Button Content="Apply Y Configuration"
+                    x:Name="ApplyYBtn"
+                    Click="ApplyYBtn_Click"
+                    Grid.ColumnSpan="3"
+                    Padding="5" Margin="15" Width="180" Grid.Row="2"
+                    Grid.Column="3"/>
             <TextBlock Text="{Binding operationStatus}"/>
         </Grid>
         <Grid DockPanel.Dock="Top" MinWidth="630">
@@ -73,22 +117,28 @@
             </StackPanel>
 
             <ig:XamDataChart x:Name="Chart1" Grid.Row="1"
-                             Margin="15,20,15,0" >
-                <!--DefaultInteraction="DragPan"
+                             Margin="15,20,15,0"
+                             DefaultInteraction="DragPan"
                              IsHorizontalZoomEnabled="True"                            
-                             Title="{Binding chartTitle}">-->
+                             Title="{Binding chartTitle}"
+                             WindowRectChanged="Chart1_WindowRectChanged"
+                             >
                 <ig:XamDataChart.DataContext>
                     <local:SpetrumViewModel/>
                 </ig:XamDataChart.DataContext>
                 <ig:XamDataChart.Axes>
                     <ig:NumericXAxis x:Name="xAxis"
-                                     MinimumValue="{Binding freqStart}"
+                                     RangeChanged="xAxis_RangeChanged"
+                                     MinimumValue="0"
+                                     MaximumValue="6000"
+                                     />
+                    <!--MinimumValue="{Binding freqStart}"
                                      MaximumValue="{Binding freqStop}"
                                      Title="Frequency [MHz]"
-                                      />
+                                      />-->
                     <ig:NumericYAxis x:Name="yAxis" 
                                      MinimumValue="-100"
-                                     MaximumValue="0"
+                                     MaximumValue="{Binding referenceTop}"
                                      Title="Power [dBm]"
                                      />
                     
@@ -97,7 +147,7 @@
                     <ig:ScatterLineSeries Thickness="2"
                                           MarkerType="None"
                                           Title="{Binding chartTitle}"
-                                   ItemsSource="{Binding dummyData}"
+                                   ItemsSource="{Binding dataModel}"
                                    YMemberPath="Y"
                                    XMemberPath="X"
                                    XAxis="{Binding ElementName=xAxis}"

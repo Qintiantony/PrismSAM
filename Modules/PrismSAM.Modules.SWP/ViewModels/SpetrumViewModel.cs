@@ -14,10 +14,16 @@ namespace PrismSAM.Modules.SWP.ViewModels
     public class SpetrumViewModel : BindableBase
     {
         #region Properties
-        private DummyDataModel _dummyData;
-        public DummyDataModel dummyData { 
-            get { return _dummyData; } 
-            set { SetProperty(ref _dummyData, value); } 
+        //private DummyDataModel _dummyData;
+        //public DummyDataModel dummyData { 
+        //    get { return _dummyData; } 
+        //    set { SetProperty(ref _dummyData, value); } 
+        //}
+        private GetSweepDataModel _dataModel;
+        public GetSweepDataModel dataModel
+        {
+            get { return _dataModel; }
+            set { SetProperty(ref _dataModel, value); }
         }
         public string chartTitle { get; set; } = "Power Spetrum Density";
 
@@ -48,48 +54,53 @@ namespace PrismSAM.Modules.SWP.ViewModels
             get { return _freqStartTextbox; }
             set { SetProperty(ref _freqStartTextbox, value); }
         }
+
+        private double _freqStopTextbox;
+        public double freqStopTextbox
+        {
+            get { return _freqStopTextbox; }
+            set { SetProperty(ref _freqStopTextbox, value); }
+        }
+
+        private double _referenceTop = 0;
+        public double referenceTop
+        {
+            get { return _referenceTop; }
+            set { SetProperty(ref _referenceTop, value); }
+        }
+
+        private double _referenceBottom=-100;
+        public double referenceBottom
+        {
+            get { return _referenceBottom; }
+            set { SetProperty(ref _referenceBottom, value); }
+        }
         #endregion
 
         public SpetrumViewModel()
         {
-            dummyData = new DummyDataModel();
+            // Dummy data model for test only
+            //dataModel = new DummyDataModel();
+            dataModel = new GetSweepDataModel();
             ApplyCommand = new DelegateCommand(ApplyConfiguration);
-            UpdateFreqStartCommand = new DelegateCommand(UpdateFreqStart);
             freqStart = SweepMode.swpDefaultConfig.StartFreq_Hz/1e6;
             freqStop = SweepMode.swpDefaultConfig.StopFreq_Hz/1e6;
             freqStartTextbox = freqStart;
+            freqStopTextbox = freqStop;
         }
 
         
 
         #region Commands
         public DelegateCommand ApplyCommand { get; private set; }
-        public DelegateCommand UpdateFreqStartCommand { get; private set; }
         #endregion
 
         #region Command Methods
         private void ApplyConfiguration()
         {
-            //var newConfig = new SWPParam_Typedef() { 
-            //    DecimateRate = 1024, 
-            //    DetPoints = 12345,
-            //    DSPPlatform = DSPPlatform_Typedef.CPU,
-            //    TracePoints = 3987
-            //};
-            //SweepMode.swpParamInfo = newConfig;
-            int opcode = SweepMode.Initialize_SWP_Standard();
-            //SweepMode.Get_SWP_Info();
-            //dummyData.GenerateData(SweepMode.swpParamInfo.TracePoints);
-            freqStart = SweepMode.swpConfig.StartFreq_Hz/1e6;
-            freqStop = SweepMode.swpConfig.StopFreq_Hz/1e6;
-            //dummyData.updateTimer.Start();
-            //dummyData.isSWP_Configured = true;
-            operationStatus = opcode.ToString();
-        }
-
-        private void UpdateFreqStart()
-        {
-            freqStart = freqStartTextbox;
+            SweepMode.swpConfig.StartFreq_Hz = freqStartTextbox*1e6;
+            SweepMode.swpConfig.StopFreq_Hz = freqStopTextbox*1e6;
+            SweepMode.Configure_SWP_Standard();
         }
         #endregion
         #region Event Handlers

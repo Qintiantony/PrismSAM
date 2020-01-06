@@ -45,6 +45,7 @@ namespace PrismSAM.Modules.SWP.Models
         public void GenerateData(int tracepoints)
         {
             double value = 50;
+            double interval = (SweepMode.swpConfig.StopFreq_Hz-SweepMode.swpConfig.StartFreq_Hz)/tracepoints;
             for (int i = 0; i < tracepoints; i++)
             {
                 double change = Rand.NextDouble();
@@ -59,7 +60,7 @@ namespace PrismSAM.Modules.SWP.Models
                 value = value % 100 - 50;
                 this.Add(new DummyDataPoint
                 {
-                    X = (double)i,
+                    X = ((double)SweepMode.swpConfig.StartFreq_Hz+i*interval)/1e6,
                     Y = (double) value
                 });
             }

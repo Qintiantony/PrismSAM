@@ -26,11 +26,11 @@ namespace PrismSAM.Core
             // Initial SWP configuration
             Detector = DetMode_TypeDef.PosPeak,
             PerformanceRate = 0,
-            RBW_Hz = 200E3, //Should be set from 10Hz to 50MHz
+            RBW_Hz = 300E3, //Should be set from 10Hz to 50MHz
             RefLevel_dBm = 20, //Should be set from -40 to +26 dBm
             RFPath = RFRxPathTypedef.RxPath_Ext,
             StartFreq_Hz = 50E6,
-            StopFreq_Hz = 600E6,
+            StopFreq_Hz = 6000E6,
             TracePoints = 900, // Should be set from 600 to 10000, auto ajusted by SAM
             Window = Window_TypeDef.FlatTop,
             TrigSrc = TrigINSrc_TypeDef.TRIGIN_FREERUN,
@@ -58,9 +58,24 @@ namespace PrismSAM.Core
         {
             // Apply SWP configuration
             int op_status;
-            if (DeviceConnection.pSA != IntPtr.Zero)
+            if (DeviceConnection.deviceStatus == 1)
             {
                 swpConfig = swpDefaultConfig;
+                op_status = SWP_Configuration(ref DeviceConnection.pSA, ref swpConfig);
+                Get_SWP_Info();
+            }
+            else
+            {
+                op_status = 99;
+            }
+            return op_status;
+        }
+
+        public static int Configure_SWP_Standard()
+        {
+            int op_status;
+            if (DeviceConnection.deviceStatus == 1)
+            {
                 op_status = SWP_Configuration(ref DeviceConnection.pSA, ref swpConfig);
                 Get_SWP_Info();
             }
@@ -74,7 +89,7 @@ namespace PrismSAM.Core
         public static int Get_SWP_Info()
         {
             int op_status;
-            if (DeviceConnection.pSA != IntPtr.Zero)
+            if (DeviceConnection.deviceStatus == 1)
             {
                 op_status = SWP_QueryParam(ref DeviceConnection.pSA, ref swpParamInfo);
                 //freqs = new double[swpParamInfo.DetPoints];
@@ -91,7 +106,7 @@ namespace PrismSAM.Core
             amps = new double[swpParamInfo.DetPoints];
             //packIndex = 0;
             int op_status;
-            if (DeviceConnection.pSA != IntPtr.Zero)
+            if (DeviceConnection.deviceStatus == 1)
             {
                 op_status = SWP_GetPartialSweep(ref DeviceConnection.pSA, freqs, amps, ref packIndex);
             }
