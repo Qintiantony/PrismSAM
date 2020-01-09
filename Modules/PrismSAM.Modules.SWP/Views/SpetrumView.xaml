@@ -23,6 +23,7 @@
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
             <TextBlock Grid.Column="0" 
                        Text="Frequency start: " 
@@ -57,6 +58,23 @@
                                 Margin="5"/>
             <TextBlock Grid.Column="2" Grid.Row="1" 
                        Text="MHz" 
+                       Margin="5"
+                       VerticalAlignment="Center"/>
+
+            <TextBlock Grid.Column="0" 
+                       Grid.Row="2"
+                       Text="RBW: " 
+                       Margin="5"
+                       VerticalAlignment="Center"/>
+            <ig:XamNumericInput Value="{Binding RBWTextbox, Mode=TwoWay}" 
+                                x:Name ="RBWTexbox"
+                                Grid.Column="1" Grid.Row="2"
+                                HorizontalAlignment="Stretch"
+                                Mask="nnnnn.nnn"
+                                PadChar=""
+                                Margin="5"/>
+            <TextBlock Grid.Column="2" Grid.Row="2" 
+                       Text="kHz" 
                        Margin="5"
                        VerticalAlignment="Center"/>
 
@@ -97,12 +115,12 @@
 
             <Button Content="Apply X Configuration" Command="{Binding ApplyCommand}"
                     Grid.ColumnSpan="3"
-                    Padding="5" Margin="15" Width="180" Grid.Row="2"/>
+                    Padding="5" Margin="15" Width="180" Grid.Row="3"/>
             <Button Content="Apply Y Configuration"
                     x:Name="ApplyYBtn"
                     Click="ApplyYBtn_Click"
                     Grid.ColumnSpan="3"
-                    Padding="5" Margin="15" Width="180" Grid.Row="2"
+                    Padding="5" Margin="15" Width="180" Grid.Row="3"
                     Grid.Column="3"/>
             <TextBlock Text="{Binding operationStatus}"/>
         </Grid>
@@ -111,16 +129,34 @@
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
             <StackPanel Grid.Row="0">
                 <TextBlock Text="Prism" Margin="20,10,0,0"/>
                 <TextBlock Text="Spectrum Analyzer" Margin="20,0,0,0" FontSize="20" Foreground="Black"/>
             </StackPanel>
 
-            <ig:XamDataChart x:Name="Chart1" Grid.Row="1"
+            <StackPanel Grid.Row="0" Grid.Column="1" 
+                        Orientation="Horizontal"
+                        FlowDirection="RightToLeft"
+                        Margin="15,20,0,0">
+                
+                <ToggleButton Content="Pause" Width="80" 
+                              Margin="15,0,0,0"
+                              IsChecked="{Binding isPausedBtn}"/>
+                <Button Content="Default" Width="80" Margin="15,0,0,0"/>
+            </StackPanel>
+
+            <ig:XamDataChart x:Name="Chart1" Grid.Row="1" 
+                             Grid.Column="0"
+                             Grid.ColumnSpan="2"
                              Margin="15,20,15,0"
                              DefaultInteraction="DragPan"
                              IsHorizontalZoomEnabled="True"                            
                              Title="{Binding chartTitle}"
+                             Subtitle=" "
                              WindowRectChanged="Chart1_WindowRectChanged"
                              >
                 <ig:XamDataChart.DataContext>
@@ -131,6 +167,7 @@
                                      RangeChanged="xAxis_RangeChanged"
                                      MinimumValue="0"
                                      MaximumValue="6000"
+                                     Title="Frequency [MHz]"
                                      />
                     <!--MinimumValue="{Binding freqStart}"
                                      MaximumValue="{Binding freqStop}"
@@ -146,12 +183,12 @@
                 <ig:XamDataChart.Series>
                     <ig:ScatterLineSeries Thickness="2"
                                           MarkerType="None"
-                                          Title="{Binding chartTitle}"
                                    ItemsSource="{Binding dataModel}"
                                    YMemberPath="Y"
                                    XMemberPath="X"
                                    XAxis="{Binding ElementName=xAxis}"
                                    YAxis="{Binding ElementName=yAxis}"
+                                   
                                    ></ig:ScatterLineSeries>
                 </ig:XamDataChart.Series>
             </ig:XamDataChart>

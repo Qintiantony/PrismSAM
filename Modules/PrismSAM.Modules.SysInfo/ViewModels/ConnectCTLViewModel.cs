@@ -1,0 +1,90 @@
+﻿using Prism.Commands;
+using Prism.Mvvm;
+using PrismSAM.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace PrismSAM.Modules.SysInfo.ViewModels
+{
+    public class ConnectCTLViewModel : BindableBase
+    {
+        #region Properties
+        private string _feedback_message;
+        public string feedback_message
+        {
+            get { return _feedback_message; }
+            set { SetProperty(ref _feedback_message, value); }
+        }
+
+        private string _connectionStatus;
+        public string connectionStatus
+        {
+            get { return _connectionStatus; }
+            set { SetProperty(ref _connectionStatus, value); }
+        }
+
+        public string server_ip
+        {
+            get { return CTL_Connection.server_addr; }
+            set { SetProperty(ref CTL_Connection.server_addr, value); }
+        }
+
+        public string server_port
+        {
+            get { return CTL_Connection.server_port.ToString(); }
+            set 
+            {
+                if (value != "")
+                {
+                    SetProperty(ref CTL_Connection.server_port, Convert.ToInt32(value));
+                }
+            }
+        }
+
+        private string _errmsg;
+        public string errmsg
+        {
+            get { return _errmsg; }
+            set { SetProperty(ref _errmsg, value); }
+        }
+
+        public DelegateCommand ConnectCommand { get; private set; }
+        public DelegateCommand CloseCommand { get; private set; }
+        public DelegateCommand SendCommand { get; private set; }
+        #endregion
+
+        #region Constructor
+        public ConnectCTLViewModel()
+        {
+            ConnectCommand = new DelegateCommand(Connect);
+            CloseCommand = new DelegateCommand(Close);
+            SendCommand = new DelegateCommand(Send);
+        }
+        #endregion
+
+        #region Commands
+        private void Connect()
+        {
+            CTL_Connection.Connect();
+            if (CTL_Connection.socketConnectionStatus)
+            {
+                feedback_message = CTL_Connection.SendCommand("AMD YES!");
+            }
+            errmsg = CTL_Connection.errmsg;
+            connectionStatus = CTL_Connection.socketConnectionStatus.ToString();
+        }
+
+        private void Close()
+        {
+            CTL_Connection.Disconnect();
+            connectionStatus = CTL_Connection.socketConnectionStatus.ToString();
+        }
+
+        private void Send()
+        {
+            feedback_message = CTL_Connection.SendCommand("AMD YES!");
+        }
+        #endregion
+    }
+}

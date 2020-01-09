@@ -16,6 +16,7 @@ namespace PrismSAM.Modules.SWP.Models
         public DispatcherTimer updateTimer;
         public bool isSWP_Configured;
         private TimeSpan _updateInterval;
+        public static bool isPaused = false;
 
         public TimeSpan updateInterval
         {
@@ -38,7 +39,7 @@ namespace PrismSAM.Modules.SWP.Models
         #region Methods
         private void UpdateData(object sender, EventArgs e)
         {
-            if (DeviceConnection.pSA != IntPtr.Zero)
+            if ( (DeviceConnection.deviceStatus == 1) && (! isPaused) )
             {
                 this.FetchData();
             }

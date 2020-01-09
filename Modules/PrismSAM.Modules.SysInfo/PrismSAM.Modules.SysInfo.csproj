@@ -49,7 +49,6 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\ConnectionModel.cs" />
     <Compile Include="SysInfoModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
@@ -64,8 +63,12 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="ViewModels\ConnectCTLViewModel.cs" />
     <Compile Include="ViewModels\ConnectionViewModel.cs" />
     <Compile Include="ViewModels\InformationViewModel.cs" />
+    <Compile Include="Views\ConnectCTL.xaml.cs">
+      <DependentUpon>ConnectCTL.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Connection.xaml.cs">
       <DependentUpon>Connection.xaml</DependentUpon>
     </Compile>
@@ -89,6 +92,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Views\ConnectCTL.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Connection.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -99,6 +106,9 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Infragistics.WPF.Controls.Editors.XamMaskedInput">
+      <Version>19.1.84</Version>
+    </PackageReference>
     <PackageReference Include="Infragistics.WPF.DockManager">
       <Version>19.1.84</Version>
     </PackageReference>
@@ -109,6 +119,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Assets\Icons\109-link.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Models\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\toptica.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

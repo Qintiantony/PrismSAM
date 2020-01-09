@@ -12,5 +12,6 @@ namespace PrismSAM.Core
         public static string SpectrumRegion = "SpectrumRegion";
         public static string RecorderRegion = "RecorderRegion";
         public static string InformationRegion = "InformationRegion";
+        public static string ConnectCTLRegion = "ConnectCTLRegion";
     }
 }

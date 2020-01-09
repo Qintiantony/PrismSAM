@@ -59,8 +59,12 @@
                                         Header="Connection Wizard"
                                         Image="../Assets/Icons/109-link.png"
                                         AllowClose="False"/>
+                    <igDock:ContentPane prism:RegionManager.RegionName="{x:Static core:RegionNames.ConnectCTLRegion}"
+                                        Header="Toptica CTL Server"
+                                        Image="../Assets/Icons/119-cube.png"
+                                        AllowClose="False"/>
                 </igDock:TabGroupPane>
-                <igDock:TabGroupPane igDock:SplitPane.RelativeSize="100,200">
+                <igDock:TabGroupPane igDock:SplitPane.RelativeSize="100,150">
                     <igDock:ContentPane prism:RegionManager.RegionName="{x:Static core:RegionNames.InformationRegion}"
                                         Header="System Information"
                                         Image="../Assets/Icons/109-link.png"

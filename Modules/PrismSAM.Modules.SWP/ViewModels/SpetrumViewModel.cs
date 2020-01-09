@@ -75,6 +75,26 @@ namespace PrismSAM.Modules.SWP.ViewModels
             get { return _referenceBottom; }
             set { SetProperty(ref _referenceBottom, value); }
         }
+
+        private double _RBWTextbox;
+        public double RBWTextbox
+        {
+            get { return _RBWTextbox; }
+            set { SetProperty(ref _RBWTextbox, value); }
+        }
+
+        public bool isPausedBtn
+        {
+            get { return GetSweepDataModel.isPaused; }
+            set { SetProperty(ref GetSweepDataModel.isPaused, value); }
+        }
+
+        private string _charSubtitle;
+        public string chartSubtitle
+        {
+            get { return _charSubtitle; }
+            set { SetProperty(ref _charSubtitle, value); }
+        }
         #endregion
 
         public SpetrumViewModel()
@@ -87,6 +107,7 @@ namespace PrismSAM.Modules.SWP.ViewModels
             freqStop = SweepMode.swpDefaultConfig.StopFreq_Hz/1e6;
             freqStartTextbox = freqStart;
             freqStopTextbox = freqStop;
+            RBWTextbox = SweepMode.swpDefaultConfig.RBW_Hz/1e3;
         }
 
         
@@ -100,6 +121,7 @@ namespace PrismSAM.Modules.SWP.ViewModels
         {
             SweepMode.swpConfig.StartFreq_Hz = freqStartTextbox*1e6;
             SweepMode.swpConfig.StopFreq_Hz = freqStopTextbox*1e6;
+            SweepMode.swpConfig.RBW_Hz = RBWTextbox * 1e3;
             SweepMode.Configure_SWP_Standard();
         }
         #endregion

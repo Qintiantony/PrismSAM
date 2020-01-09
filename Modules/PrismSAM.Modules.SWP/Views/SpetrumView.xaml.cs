@@ -28,6 +28,9 @@ namespace PrismSAM.Modules.SWP.Views
         {
             this.FreqStartTexbox.Value = this.xAxis.ActualVisibleMinimumValue;
             this.FreqStopTexbox.Value = this.xAxis.ActualVisibleMaximumValue;
+            double centerValue = (this.xAxis.ActualVisibleMaximumValue + this.xAxis.ActualVisibleMinimumValue)/2;
+            double spanValue = this.xAxis.ActualVisibleMaximumValue - this.xAxis.ActualVisibleMinimumValue;
+            this.Chart1.Subtitle = "Center freq: "+ centerValue.ToString("F2") + " MHz; Span: " + spanValue.ToString("F2") + " MHz;";
         }
 
         private void ApplyYBtn_Click(object sender, System.Windows.RoutedEventArgs e)

@@ -48,6 +48,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CTL_Connection.cs" />
     <Compile Include="Declaration.cs" />
     <Compile Include="DeviceConnection.cs" />
     <Compile Include="HardwareInfo.cs" />

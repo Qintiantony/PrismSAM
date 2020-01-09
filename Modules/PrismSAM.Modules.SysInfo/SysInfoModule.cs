@@ -19,6 +19,7 @@ namespace PrismSAM.Modules.SysInfo
         {
             regionManager.RegisterViewWithRegion(RegionNames.ConnectionRegion, typeof(Connection));
             regionManager.RegisterViewWithRegion(RegionNames.InformationRegion, typeof(Information));
+            regionManager.RegisterViewWithRegion(RegionNames.ConnectCTLRegion, typeof(ConnectCTL));
         }
 
         public void RegisterTypes(IContainerRegistry containerRegistry)
