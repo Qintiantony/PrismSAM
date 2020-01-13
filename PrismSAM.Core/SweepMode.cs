@@ -26,12 +26,12 @@ namespace PrismSAM.Core
             // Initial SWP configuration
             Detector = DetMode_TypeDef.PosPeak,
             PerformanceRate = 0,
-            RBW_Hz = 30000E3, //Should be set from 10Hz to 50MHz
-            RefLevel_dBm = 20, //Should be set from -40 to +26 dBm
+            RBW_Hz = 70E3, //Should be set from 10Hz to 50MHz
+            RefLevel_dBm = 0, //Should be set from -40 to +26 dBm
             RFPath = RFRxPathTypedef.RxPath_Ext,
             StartFreq_Hz = 50E6,
-            StopFreq_Hz = 6000E6,
-            TracePoints = 1600, // Should be set from 600 to 10000, auto ajusted by SAM
+            StopFreq_Hz = 600E6,
+            TracePoints = 2000, // Should be set from 600 to 10000, auto ajusted by SAM
             Window = Window_TypeDef.FlatTop,
             TrigSrc = TrigINSrc_TypeDef.TRIGIN_FREERUN,
             TrigOutMode = TrigOUTMode_TypeDef.TRIGOUT_NULL,

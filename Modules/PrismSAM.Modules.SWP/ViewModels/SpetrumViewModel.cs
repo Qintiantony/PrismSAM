@@ -98,10 +98,12 @@ namespace PrismSAM.Modules.SWP.ViewModels
             set { SetProperty(ref _charSubtitle, value); }
         }
 
+        private bool _BS_isEnabled;
         public bool BS_isEnabled
         {
-            get { return CTL_Connection.BS_Catch_enabled; }
-            set { SetProperty(ref CTL_Connection.BS_Catch_enabled, value); }
+            get { return _BS_isEnabled; }
+            //set { SetProperty(ref CTL_Connection.BS_Catch_enabled, value); }
+            set { SetProperty(ref _BS_isEnabled, value); }
         }
 
         public bool BS_btn_isEnabled
@@ -118,6 +120,7 @@ namespace PrismSAM.Modules.SWP.ViewModels
             //dataModel = new DummyDataModel();
             dataModel = new GetSweepDataModel();
             ApplyCommand = new DelegateCommand(ApplyConfiguration);
+            Enable_BS_Command = new DelegateCommand(Enable_BS);
             freqStart = SweepMode.swpDefaultConfig.StartFreq_Hz/1e6;
             freqStop = SweepMode.swpDefaultConfig.StopFreq_Hz/1e6;
             freqStartTextbox = freqStart;
@@ -125,9 +128,9 @@ namespace PrismSAM.Modules.SWP.ViewModels
             RBWTextbox = SweepMode.swpDefaultConfig.RBW_Hz/1e3;
         }
 
-        private void BS_isEnabled_received(bool obj)
+        private void BS_isEnabled_received(bool parameter)
         {
-            BS_isEnabled = obj;
+            BS_isEnabled = parameter;
         }
 
 
@@ -135,6 +138,7 @@ namespace PrismSAM.Modules.SWP.ViewModels
 
         #region Commands
         public DelegateCommand ApplyCommand { get; private set; }
+        public DelegateCommand Enable_BS_Command { get; private set; }
         #endregion
 
         #region Command Methods
@@ -143,9 +147,15 @@ namespace PrismSAM.Modules.SWP.ViewModels
             SweepMode.swpConfig.StartFreq_Hz = freqStartTextbox*1e6;
             SweepMode.swpConfig.StopFreq_Hz = freqStopTextbox*1e6;
             SweepMode.swpConfig.RBW_Hz = RBWTextbox * 1e3;
-            SweepMode.swpConfig.TracePoints = 900;
+            SweepMode.swpConfig.TracePoints = 2000;
             SweepMode.Configure_SWP_Standard();
             dataModel.GenerateData(SweepMode.swpConfig.TracePoints);
+        }
+
+        private void Enable_BS()
+        {
+            CTL_Connection.BS_Catch_enabled = true;
+            BS_isEnabled = true;
         }
         #endregion
         #region Event Handlers

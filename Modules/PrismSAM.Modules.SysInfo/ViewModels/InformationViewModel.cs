@@ -43,7 +43,7 @@ namespace PrismSAM.Modules.SysInfo.ViewModels
         public InformationViewModel(IEventAggregator ea)
         {
             _ea = ea;
-            _ea.GetEvent<CTL_Events>().Publish(BS_isEnabled);
+            BS_isEnabled = false;
             SweepMode.Fake_SWP_configuration();
             updateTimeSpan = TimeSpan.FromMilliseconds(500);
             infoUpdateTimer = new DispatcherTimer { Interval = updateTimeSpan };
@@ -70,7 +70,14 @@ namespace PrismSAM.Modules.SysInfo.ViewModels
         }
         public void GetCTLInfo()
         {
-            BS_isEnabled = CTL_Connection.BS_Catch_enabled;
+            if (BS_isEnabled != CTL_Connection.BS_Catch_enabled)
+            {
+                BS_isEnabled = CTL_Connection.BS_Catch_enabled;
+                if (!BS_isEnabled)
+                {
+                    _ea.GetEvent<CTL_Events>().Publish(BS_isEnabled);
+                }
+            }
         }
         #endregion
     }

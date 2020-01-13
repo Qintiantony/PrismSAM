@@ -97,6 +97,7 @@ namespace PrismSAM.Modules.SWP.Models
             this.CatchBS();
         }
 
+        //TODO: Restore CatechBS after dubugging event aggregator
         public void CatchBS()
         {
             if (amp_buffer < CTL_Connection.BS_Threshold)
@@ -113,6 +114,14 @@ namespace PrismSAM.Modules.SWP.Models
                 }
             }
         }
+
+        //public void CatchBS()
+        //{
+        //    if (CTL_Connection.BS_Catch_enabled && (Rand.Next()%100==5))
+        //    {
+        //        CTL_Connection.BS_Catch_enabled = false;
+        //    }
+        //}
         #endregion
     }
 
