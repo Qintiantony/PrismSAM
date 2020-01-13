@@ -1,6 +1,8 @@
 ﻿using Prism.Commands;
+using Prism.Events;
 using Prism.Mvvm;
 using PrismSAM.Core;
+using PrismSAM.Core.Events;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,15 +26,26 @@ namespace PrismSAM.Modules.SysInfo.ViewModels
         private string _swpinfo_DspPlatform;
         public string swpinfo_DspPlatform { get { return _swpinfo_DspPlatform; } set { SetProperty(ref _swpinfo_DspPlatform, value); } }
 
+        private bool _BS_isEnabled;
+        public bool BS_isEnabled
+        {
+            get { return _BS_isEnabled; }
+            set { SetProperty(ref _BS_isEnabled, value); }
+        }
+
         private DispatcherTimer infoUpdateTimer;
         private TimeSpan updateTimeSpan;
+
+        private IEventAggregator _ea;
         #endregion
 
         #region Constructor
-        public InformationViewModel()
+        public InformationViewModel(IEventAggregator ea)
         {
+            _ea = ea;
+            _ea.GetEvent<CTL_Events>().Publish(BS_isEnabled);
             SweepMode.Fake_SWP_configuration();
-            updateTimeSpan = TimeSpan.FromSeconds(1);
+            updateTimeSpan = TimeSpan.FromMilliseconds(500);
             infoUpdateTimer = new DispatcherTimer { Interval = updateTimeSpan };
             GetSWPInfo();
             infoUpdateTimer.Tick += UpdateInfo;
@@ -42,6 +55,7 @@ namespace PrismSAM.Modules.SysInfo.ViewModels
         private void UpdateInfo(object sender, EventArgs e)
         {
             GetSWPInfo();
+            GetCTLInfo();
         }
         #endregion
 
@@ -53,6 +67,10 @@ namespace PrismSAM.Modules.SysInfo.ViewModels
             swpinfo_DetPoints = SweepMode.swpParamInfo.DetPoints.ToString();
             swpinfo_TracePoints = SweepMode.swpParamInfo.TracePoints.ToString();
             swpinfo_DspPlatform = SweepMode.swpParamInfo.DSPPlatform == DSPPlatform_Typedef.FPGA ? "FPGA" : "CPU";
+        }
+        public void GetCTLInfo()
+        {
+            BS_isEnabled = CTL_Connection.BS_Catch_enabled;
         }
         #endregion
     }

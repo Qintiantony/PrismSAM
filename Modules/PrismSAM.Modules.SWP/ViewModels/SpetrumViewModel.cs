@@ -1,7 +1,9 @@
 ﻿using Infragistics.Controls.Charts;
 using Prism.Commands;
+using Prism.Events;
 using Prism.Mvvm;
 using PrismSAM.Core;
+using PrismSAM.Core.Events;
 using PrismSAM.Modules.SWP.Models;
 using System;
 using System.Collections.Generic;
@@ -95,10 +97,23 @@ namespace PrismSAM.Modules.SWP.ViewModels
             get { return _charSubtitle; }
             set { SetProperty(ref _charSubtitle, value); }
         }
+
+        public bool BS_isEnabled
+        {
+            get { return CTL_Connection.BS_Catch_enabled; }
+            set { SetProperty(ref CTL_Connection.BS_Catch_enabled, value); }
+        }
+
+        public bool BS_btn_isEnabled
+        {
+            get { return CTL_Connection.socketConnectionStatus; }
+            set { SetProperty(ref CTL_Connection.socketConnectionStatus, value); }
+        }
         #endregion
 
-        public SpetrumViewModel()
+        public SpetrumViewModel(IEventAggregator ea)
         {
+            ea.GetEvent<CTL_Events>().Subscribe(BS_isEnabled_received);
             // Dummy data model for test only
             //dataModel = new DummyDataModel();
             dataModel = new GetSweepDataModel();
@@ -110,7 +125,13 @@ namespace PrismSAM.Modules.SWP.ViewModels
             RBWTextbox = SweepMode.swpDefaultConfig.RBW_Hz/1e3;
         }
 
-        
+        private void BS_isEnabled_received(bool obj)
+        {
+            BS_isEnabled = obj;
+        }
+
+
+
 
         #region Commands
         public DelegateCommand ApplyCommand { get; private set; }
@@ -122,7 +143,9 @@ namespace PrismSAM.Modules.SWP.ViewModels
             SweepMode.swpConfig.StartFreq_Hz = freqStartTextbox*1e6;
             SweepMode.swpConfig.StopFreq_Hz = freqStopTextbox*1e6;
             SweepMode.swpConfig.RBW_Hz = RBWTextbox * 1e3;
+            SweepMode.swpConfig.TracePoints = 900;
             SweepMode.Configure_SWP_Standard();
+            dataModel.GenerateData(SweepMode.swpConfig.TracePoints);
         }
         #endregion
         #region Event Handlers

@@ -3,11 +3,28 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:prism="http://prismlibrary.com/"
              xmlns:ig="http://schemas.infragistics.com/xaml"
+             xmlns:converters="clr-namespace:PrismSAM.Core.Converters;assembly=PrismSAM.Core"
              prism:ViewModelLocator.AutoWireViewModel="True">
+
+    <UserControl.Resources>
+        <converters:StatusImageConverter x:Key="StatusImageConverter"/>
+    </UserControl.Resources>
+    
     <StackPanel Orientation="Vertical">
-        <Image Source="../Assets/Icons/toptica.png" Height="40" Margin="10,10,10,5"/>
-        <StackPanel Orientation="Horizontal" Margin="10">
-            <TextBlock Text="Server IP: " VerticalAlignment="Center"/>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="40"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="40"/>
+            </Grid.ColumnDefinitions>
+            <Image Source="../Assets/Icons/toptica.png" 
+                   Height="60" Margin="10,10,10,10"
+                   Grid.Column="1"/>
+        </Grid>
+        <StackPanel Orientation="Horizontal" Margin="10,5">
+            
+            <TextBlock Text="Server IP: " VerticalAlignment="Center"
+                       Width="50"/>
             <ig:XamMaskedInput Mask="nnn.nnn.nnn.nnn" 
                                Text="{Binding server_ip, Mode=TwoWay, FallbackValue='111.111.111.111'}"
                                Padding="5"
@@ -18,23 +35,36 @@
                                 Padding="5"
                                HorizontalAlignment="Center"
                                Width="45"/>
+            <Image Source="{Binding connectionStatus, Converter={StaticResource StatusImageConverter}}" 
+                   Width="25" Margin="10,0,0,0"
+                   VerticalAlignment="Center"
+                   Grid.Column="0"/>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Margin="10,5">
+
+            <TextBlock Text="CTL IP: " VerticalAlignment="Center" Width="50"/>
+            <ig:XamMaskedInput Mask="nnn.nnn.nnn.nnn" 
+                               Text="{Binding CTL_ip, Mode=TwoWay, FallbackValue='111.111.111.111'}"
+                               Padding="5"
+                               Width="110"/>
         </StackPanel>
         <Grid>
             <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
+            
             <Button x:Name="ConnectBtn" Content="Connect to CTL"
                 Margin="10,5,5,5" Padding="5" IsEnabled="True"
+                Grid.Column="1"
                 Command="{Binding ConnectCommand}"/>
             <Button x:Name="DisconnectBtn" Content="Disconnect"
                 Margin="5,5,10,5" Padding="5" IsEnabled="True"
-                Grid.Column="1"
+                Grid.Column="2"
                 Command="{Binding CloseCommand}"/>
         </Grid>
         
-        <TextBlock Text="{Binding connectionStatus, FallbackValue='Not Connected'}" HorizontalAlignment="Center" 
-                   Margin="5" Padding="0"/>
         <TextBlock Text="{Binding feedback_message, FallbackValue='No Feedback'}" HorizontalAlignment="Center" 
                    Margin="5" Padding="0"/>
         <TextBlock Text="{Binding errmsg, FallbackValue='No Error'}" 

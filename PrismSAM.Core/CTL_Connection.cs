@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
@@ -11,11 +12,17 @@ namespace PrismSAM.Core
     public class CTL_Connection
     {
         #region Static Field
-        public static string server_addr = "192.168.123.154";
-        public static int server_port = 9998;
+        public static string server_addr = "127.0.0.1";
+        public static int server_port = 8688;
+        public static string CTL_addr = "192.168.1.101";
         public static Socket client;
         public static bool socketConnectionStatus = false;
         public static string errmsg;
+
+        //TODO: move to BS control module
+        public static bool BS_Catch_enabled = false;
+        public static bool BS_isCatched = false;
+        public static double BS_Threshold = -40;
         #endregion
 
         #region Methods
@@ -46,7 +53,29 @@ namespace PrismSAM.Core
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                errmsg = e.Message;
+                return -1;
+            }
+        }
+
+        public static int LaunchServer(string CTL_ip)
+        {
+            try
+            {
+                using (Process p = new Process())
+                {
+                    string scriptPath = "CTL_Server.py";
+                    string sArguments = scriptPath + " " + CTL_ip;
+                    p.StartInfo.FileName = "python.exe";
+                    p.StartInfo.Arguments = sArguments;
+                    p.StartInfo.CreateNoWindow = true;
+                    p.Start();
+                    return 1;
+                }
+            }
+            catch (Exception e)
+            {
+                errmsg = e.Message;
                 return -1;
             }
         }

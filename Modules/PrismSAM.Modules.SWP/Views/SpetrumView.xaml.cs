@@ -1,5 +1,6 @@
 ﻿using Infragistics.Controls.Charts;
 using Infragistics.Windows.DockManager;
+using PrismSAM.Modules.SWP.ViewModels;
 using System.Windows.Controls;
 
 namespace PrismSAM.Modules.SWP.Views
@@ -12,6 +13,7 @@ namespace PrismSAM.Modules.SWP.Views
         public SpetrumView()
         {
             InitializeComponent();
+            
         }
 
         private void CreateChart()

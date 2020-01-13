@@ -115,7 +115,7 @@
     <PackageReference Include="Infragistics.WPF.Ribbon">
       <Version>19.1.84</Version>
     </PackageReference>
-    <PackageReference Include="Prism.Wpf" Version="7.2.0.1367" />
+    <PackageReference Include="Prism.Wpf" Version="7.2.0.1422" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Assets\Icons\109-link.png" />
@@ -124,6 +124,8 @@
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Assets\Icons\offline.png" />
+    <Resource Include="Assets\Icons\online.png" />
     <Resource Include="Assets\Icons\toptica.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

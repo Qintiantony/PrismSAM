@@ -38,9 +38,10 @@ namespace PrismSAM.Core
             SpurRejLevel = SpurRej_TypeDef.Enhanced,
             CPUUtilization = CPUUtil_TypeDef.Low
         };
-        public static double[] freqs;
-        public static double[] amps;
+        public static double[] freqs = new double[30];
+        public static double[] amps = new double[30];
         public static int packIndex;
+        public static int packIndexMax;
         #endregion
 
         #region Methods
@@ -92,9 +93,9 @@ namespace PrismSAM.Core
             if (DeviceConnection.deviceStatus == 1)
             {
                 op_status = SWP_QueryParam(ref DeviceConnection.pSA, ref swpParamInfo);
-                //freqs = new double[swpParamInfo.DetPoints];
-                //amps = new double[swpParamInfo.DetPoints];
-                //packIndex = 0;
+                freqs = new double[swpParamInfo.DetPoints];
+                amps = new double[swpParamInfo.DetPoints];
+                packIndexMax = (int)(swpParamInfo.TracePoints/swpParamInfo.DetPoints);
             }
             else op_status = 99;
             return op_status;
@@ -102,8 +103,8 @@ namespace PrismSAM.Core
 
         public static int Get_SWP_Data()
         {
-            freqs = new double[swpParamInfo.DetPoints];
-            amps = new double[swpParamInfo.DetPoints];
+            //freqs = new double[swpParamInfo.DetPoints];
+            //amps = new double[swpParamInfo.DetPoints];
             //packIndex = 0;
             int op_status;
             if (DeviceConnection.deviceStatus == 1)

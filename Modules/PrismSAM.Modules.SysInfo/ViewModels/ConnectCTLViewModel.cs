@@ -3,7 +3,9 @@ using Prism.Mvvm;
 using PrismSAM.Core;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.Windows.Data;
 
 namespace PrismSAM.Modules.SysInfo.ViewModels
 {
@@ -17,8 +19,8 @@ namespace PrismSAM.Modules.SysInfo.ViewModels
             set { SetProperty(ref _feedback_message, value); }
         }
 
-        private string _connectionStatus;
-        public string connectionStatus
+        private bool _connectionStatus;
+        public bool connectionStatus
         {
             get { return _connectionStatus; }
             set { SetProperty(ref _connectionStatus, value); }
@@ -42,6 +44,12 @@ namespace PrismSAM.Modules.SysInfo.ViewModels
             }
         }
 
+        public string CTL_ip
+        {
+            get { return CTL_Connection.CTL_addr; }
+            set { SetProperty(ref CTL_Connection.CTL_addr, value); }
+        }
+
         private string _errmsg;
         public string errmsg
         {
@@ -60,25 +68,28 @@ namespace PrismSAM.Modules.SysInfo.ViewModels
             ConnectCommand = new DelegateCommand(Connect);
             CloseCommand = new DelegateCommand(Close);
             SendCommand = new DelegateCommand(Send);
+            connectionStatus = CTL_Connection.socketConnectionStatus;
         }
         #endregion
 
         #region Commands
         private void Connect()
         {
+            CTL_Connection.LaunchServer(CTL_ip);
             CTL_Connection.Connect();
             if (CTL_Connection.socketConnectionStatus)
             {
-                feedback_message = CTL_Connection.SendCommand("AMD YES!");
+                feedback_message = CTL_Connection.SendCommand(CTL_Commands.ctl_state);
             }
             errmsg = CTL_Connection.errmsg;
-            connectionStatus = CTL_Connection.socketConnectionStatus.ToString();
+            connectionStatus = CTL_Connection.socketConnectionStatus;
         }
 
         private void Close()
         {
+            feedback_message = CTL_Connection.SendCommand(CTL_Commands.close_server);
             CTL_Connection.Disconnect();
-            connectionStatus = CTL_Connection.socketConnectionStatus.ToString();
+            connectionStatus = CTL_Connection.socketConnectionStatus;
         }
 
         private void Send()

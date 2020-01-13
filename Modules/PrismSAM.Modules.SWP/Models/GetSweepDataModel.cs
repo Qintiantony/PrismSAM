@@ -1,4 +1,6 @@
-﻿using PrismSAM.Core;
+﻿using Prism.Events;
+using PrismSAM.Core;
+using PrismSAM.Core.Events;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -17,6 +19,7 @@ namespace PrismSAM.Modules.SWP.Models
         public bool isSWP_Configured;
         private TimeSpan _updateInterval;
         public static bool isPaused = false;
+        private double amp_buffer;
 
         public TimeSpan updateInterval
         {
@@ -28,9 +31,9 @@ namespace PrismSAM.Modules.SWP.Models
         public GetSweepDataModel()
         {
             // Initialize update timer
-            updateInterval = TimeSpan.FromMilliseconds(10);
+            updateInterval = TimeSpan.FromMilliseconds(0.1);
             this.updateTimer = new DispatcherTimer { Interval = this.updateInterval };
-            //GenerateData(200);
+            GenerateData(1000);
             this.updateTimer.Tick += UpdateData;
             this.updateTimer.Start();
         }
@@ -42,17 +45,19 @@ namespace PrismSAM.Modules.SWP.Models
             if ( (DeviceConnection.deviceStatus == 1) && (! isPaused) )
             {
                 this.FetchData();
+                
             }
 
         }
 
         public void GenerateData(int tracepoints)
         {
+            this.Clear();
             for (int i = 0; i < tracepoints; i++)
             {
                 this.Add(new SweepDataPoint
                 {
-                    X = (double)i,
+                    X = 7000,
                     Y = 0
                 });
             }
@@ -61,23 +66,52 @@ namespace PrismSAM.Modules.SWP.Models
         public void FetchData()
         {
             this.Clear();
-            GenerateData(SweepMode.swpParamInfo.TracePoints);
+            //GenerateData(SweepMode.swpParamInfo.TracePoints);
+            amp_buffer = -999;
             do
             {
                 SweepMode.Get_SWP_Data();
-                int pack_index = SweepMode.packIndex;
+                //SweepMode.Get_SWP_Data();
+                var amp_maximum =  SweepMode.amps.Max();
+                if (amp_maximum > amp_buffer)
+                {
+                    amp_buffer = amp_maximum;
+                }
                 int det_points = SweepMode.swpParamInfo.DetPoints;
                 for (int i = 0; i < SweepMode.swpParamInfo.DetPoints; i++)
                 {
-                    this.RemoveItem((int)pack_index * det_points + i);
-                    this.InsertItem((int)pack_index * det_points + i, new SweepDataPoint
+                    this.Add(new SweepDataPoint
                     {
                         X = SweepMode.freqs[i] / 1e6, //Convert freq in Hz to MHz
                         Y = SweepMode.amps[i]
                     });
+                    //this.RemoveItem((int)pack_index * det_points + i);
+                    //this.InsertItem((int)pack_index * det_points + i, new SweepDataPoint
+                    //{
+                    //    X = SweepMode.freqs[i] / 1e6, //Convert freq in Hz to MHz
+                    //    Y = SweepMode.amps[i]
+                    //});
                 }
             }
-            while (SweepMode.packIndex != 0);
+            while (SweepMode.packIndex < (SweepMode.packIndexMax-1));
+            this.CatchBS();
+        }
+
+        public void CatchBS()
+        {
+            if (amp_buffer < CTL_Connection.BS_Threshold)
+            {
+                CTL_Connection.BS_isCatched = false;
+            }
+            else
+            {
+                if (CTL_Connection.BS_Catch_enabled && CTL_Connection.socketConnectionStatus && !CTL_Connection.BS_isCatched)
+                {
+                    CTL_Connection.SendCommand(CTL_Commands.ctl_scan_pause);
+                    CTL_Connection.BS_isCatched = true;
+                    CTL_Connection.BS_Catch_enabled = false;
+                }
+            }
         }
         #endregion
     }

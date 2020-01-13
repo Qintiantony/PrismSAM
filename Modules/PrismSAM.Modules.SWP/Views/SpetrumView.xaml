@@ -147,6 +147,10 @@
                               Margin="15,0,0,0"
                               IsChecked="{Binding isPausedBtn}"/>
                 <Button Content="Default" Width="80" Margin="15,0,0,0"/>
+                <ToggleButton Content="BS AutoLock" Width="90" 
+                              Margin="15,0,0,0"
+                              IsChecked="{Binding BS_isEnabled, Mode=TwoWay}"
+                              />
             </StackPanel>
 
             <ig:XamDataChart x:Name="Chart1" Grid.Row="1" 
@@ -159,9 +163,9 @@
                              Subtitle=" "
                              WindowRectChanged="Chart1_WindowRectChanged"
                              >
-                <ig:XamDataChart.DataContext>
+                <!--<ig:XamDataChart.DataContext>
                     <local:SpetrumViewModel/>
-                </ig:XamDataChart.DataContext>
+                </ig:XamDataChart.DataContext>-->
                 <ig:XamDataChart.Axes>
                     <ig:NumericXAxis x:Name="xAxis"
                                      RangeChanged="xAxis_RangeChanged"

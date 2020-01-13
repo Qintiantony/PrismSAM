@@ -136,7 +136,7 @@
     <PackageReference Include="Infragistics.WPF.Themes.RoyalLight">
       <Version>19.1.84</Version>
     </PackageReference>
-    <PackageReference Include="Prism.Unity" Version="7.2.0.1367" />
+    <PackageReference Include="Prism.Unity" Version="7.2.0.1422" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="Modules\PrismSAM.Modules.IQRecorder\PrismSAM.Modules.IQRecorder.csproj">
