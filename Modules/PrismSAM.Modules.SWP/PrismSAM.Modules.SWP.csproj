@@ -65,7 +65,11 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="ViewModels\BS_TrackerViewModel.cs" />
     <Compile Include="ViewModels\SpetrumViewModel.cs" />
+    <Compile Include="Views\BS_TrackerView.xaml.cs">
+      <DependentUpon>BS_TrackerView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\SpetrumView.xaml.cs">
       <DependentUpon>SpetrumView.xaml</DependentUpon>
     </Compile>
@@ -86,6 +90,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Views\BS_TrackerView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\SpetrumView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

@@ -9,6 +9,7 @@ namespace PrismSAM.Core
     public class CTL_Commands
     {
         public static string ctl_state = "CTLSTATE";
+        public static string ctl_lambda = "CTLWAVLE";
         public static string close_server = "QUITSERV";
         public static string ctl_scan_start = "SC_START";
         public static string ctl_scan_stop = "SC__STOP";

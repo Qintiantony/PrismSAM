@@ -42,6 +42,7 @@ namespace PrismSAM.Core
         public static double[] amps = new double[30];
         public static int packIndex;
         public static int packIndexMax;
+        public static bool sweepIsPaused;
         #endregion
 
         #region Methods

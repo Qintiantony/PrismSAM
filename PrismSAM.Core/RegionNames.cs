@@ -13,5 +13,6 @@ namespace PrismSAM.Core
         public static string RecorderRegion = "RecorderRegion";
         public static string InformationRegion = "InformationRegion";
         public static string ConnectCTLRegion = "ConnectCTLRegion";
+        public static string BS_TrackerRegion = "BS_TrackerRegion";
     }
 }

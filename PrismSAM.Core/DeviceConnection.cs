@@ -61,6 +61,7 @@ namespace PrismSAM.Core
                     if (opStatus != 0) return "Fail to load device infomation";
                     opStatus = SA_QueryTemp(ref pSA, ref deviceTemp);
                     SweepMode.Initialize_SWP_Standard(); // Initialize SWP mode for visualization
+                    IQRecorderMode.IQS_Config = IQRecorderMode.IQS_Default;
                     return "Device openned successfully";
                 }
                 else return "Connection failed with error...";

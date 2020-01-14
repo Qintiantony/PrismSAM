@@ -17,6 +17,7 @@ namespace PrismSAM.Modules.SWP
         public void OnInitialized(IContainerProvider containerProvider)
         {
             regionManager.RegisterViewWithRegion(RegionNames.SpectrumRegion, typeof(SpetrumView));
+            regionManager.RegisterViewWithRegion(RegionNames.BS_TrackerRegion, typeof(BS_TrackerView));
         }
 
         public void RegisterTypes(IContainerRegistry containerRegistry)

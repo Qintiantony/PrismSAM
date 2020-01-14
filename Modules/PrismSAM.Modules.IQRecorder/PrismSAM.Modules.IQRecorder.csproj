@@ -63,7 +63,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="ViewModels\RecorderViewViewModel.cs" />
+    <Compile Include="ViewModels\RecorderViewModel.cs" />
     <Compile Include="ViewModels\ViewAViewModel.cs" />
     <Compile Include="Views\RecorderView.xaml.cs">
       <DependentUpon>RecorderView.xaml</DependentUpon>
@@ -91,6 +91,12 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Infragistics.WPF.Charts">
+      <Version>19.1.84</Version>
+    </PackageReference>
+    <PackageReference Include="Infragistics.WPF.Controls.Editors.XamMaskedInput">
+      <Version>19.1.84</Version>
+    </PackageReference>
     <PackageReference Include="Infragistics.WPF.DockManager">
       <Version>19.1.84</Version>
     </PackageReference>

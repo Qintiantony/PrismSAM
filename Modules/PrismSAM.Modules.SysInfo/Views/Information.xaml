@@ -25,5 +25,23 @@
             <TextBlock Grid.Column="0" Grid.Row="3" Text="DSP Platform:"/>
             <TextBlock Grid.Column="1" Grid.Row="3" Text="{Binding swpinfo_DspPlatform, FallbackValue='Not found'}"/>
         </Grid>
+        <TextBlock Text="IQS Information" Margin="10,10,10,0" FontSize="16"/>
+        <Grid Margin="10,10,10,10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="120"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="25"/>
+                <RowDefinition Height="25"/>
+                <RowDefinition Height="25"/>
+                <RowDefinition Height="25"/>
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Column="0" Grid.Row="0" Text="Trigger Mode:"/>
+            <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding IQS_TriggerMode, FallbackValue='Not found'}"/>
+            <TextBlock Grid.Column="0" Grid.Row="1" Text="Trigger Source:"/>
+            <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding IQS_TriggerSource, FallbackValue='Not found'}"/>
+        </Grid>
     </StackPanel>
+    
 </UserControl>

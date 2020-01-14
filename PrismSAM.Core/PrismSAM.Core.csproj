@@ -32,6 +32,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CsvHelper, Version=12.0.0.0, Culture=neutral, PublicKeyToken=8c4959082be5c823, processorArchitecture=MSIL">
+      <HintPath>..\packages\CsvHelper.12.3.2\lib\net47\CsvHelper.dll</HintPath>
+    </Reference>
     <Reference Include="Prism, Version=7.2.0.1422, Culture=neutral, PublicKeyToken=40ee6c3a2184dc59, processorArchitecture=MSIL">
       <HintPath>..\packages\Prism.Core.7.2.0.1422\lib\net45\Prism.dll</HintPath>
     </Reference>
@@ -54,13 +57,17 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BS_Tracker.cs" />
     <Compile Include="Converters\StatusImageConverter.cs" />
     <Compile Include="CTL_Commands.cs" />
     <Compile Include="CTL_Connection.cs" />
     <Compile Include="Declaration.cs" />
     <Compile Include="DeviceConnection.cs" />
+    <Compile Include="Events\BS_CatchedEvent.cs" />
     <Compile Include="Events\CTL_Events.cs" />
+    <Compile Include="Events\SweepPauseEvent.cs" />
     <Compile Include="HardwareInfo.cs" />
+    <Compile Include="IQRecorderMode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

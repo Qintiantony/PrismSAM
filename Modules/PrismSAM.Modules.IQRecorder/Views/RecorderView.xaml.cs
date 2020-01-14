@@ -1,5 +1,8 @@
 ﻿using Infragistics.Windows.DockManager;
+using System;
+using System.Windows;
 using System.Windows.Controls;
+using PrismSAM.Core;
 
 namespace PrismSAM.Modules.IQRecorder.Views
 {
@@ -11,6 +14,12 @@ namespace PrismSAM.Modules.IQRecorder.Views
         public RecorderView()
         {
             InitializeComponent();
+            this.Loaded += RecorderLoaded;
+        }
+
+        private void RecorderLoaded(object sender, RoutedEventArgs e)
+        {
+            IQRecorderMode.ConfigureIQRecorder();
         }
     }
 }

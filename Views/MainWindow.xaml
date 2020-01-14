@@ -2,6 +2,7 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:prism="http://prismlibrary.com/"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:igRibbon="http://infragistics.com/Ribbon"
         xmlns:igDock ="http://infragistics.com/DockManager"
         xmlns:ig ="http://schemas.infragistics.com/xaml/wpf"
@@ -39,14 +40,22 @@
     <igDock:XamDockManager Name="xamDockManager1">
         <igDock:DocumentContentHost>
             <igDock:SplitPane>
-                <igDock:TabGroupPane>
+                <igDock:TabGroupPane SelectionChanged="TabGroupPane_SelectionChanged" x:Name="ModuleTabGroupPane">
                     <igDock:ContentPane prism:RegionManager.RegionName="{x:Static core:RegionNames.SpectrumRegion}"
                                         Header="Spectrum Analyzer"
                                         Image="/Assets/Icons/057-wave.png"
+                                        AllowClose="False"
+                                        >
+                    </igDock:ContentPane>
+                    <igDock:ContentPane prism:RegionManager.RegionName="{x:Static core:RegionNames.BS_TrackerRegion}"
+                                        Header="BS Tracker       "
+                                        Image="/Assets/Icons/054-signal.png"
+                                        AllowClose="False"
                                         />
                     <igDock:ContentPane prism:RegionManager.RegionName="{x:Static core:RegionNames.RecorderRegion}"
-                                        Header="IQ Recorder"
+                                        Header="IQ Recorder      "
                                         Image="/Assets/Icons/054-signal.png"
+                                        AllowClose="False"
                                         />
                 </igDock:TabGroupPane>
             </igDock:SplitPane>

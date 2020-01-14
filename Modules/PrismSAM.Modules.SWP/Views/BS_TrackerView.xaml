@@ -1,7 +1,7 @@
-﻿<UserControl x:Class="PrismSAM.Modules.IQRecorder.Views.RecorderView"
+﻿<UserControl x:Class="PrismSAM.Modules.SWP.Views.BS_TrackerView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:prism="http://prismlibrary.com/" 
+             xmlns:prism="http://prismlibrary.com/"
              xmlns:ig="http://schemas.infragistics.com/xaml"
              xmlns:igwpf="http://schemas.infragistics.com/xaml/wpf"
              prism:ViewModelLocator.AutoWireViewModel="True">
@@ -131,7 +131,7 @@
             </Grid.ColumnDefinitions>
             <StackPanel Grid.Row="0">
                 <TextBlock Text="Prism" Margin="20,10,0,0"/>
-                <TextBlock Text="IQS Recorder" Margin="20,0,0,0" FontSize="20" Foreground="Black"/>
+                <TextBlock Text="Brillouin Scattering Tracker" Margin="20,0,0,0" FontSize="20" Foreground="Black"/>
             </StackPanel>
 
             <StackPanel Grid.Row="0" Grid.Column="1" 
@@ -155,7 +155,8 @@
                              Grid.ColumnSpan="2"
                              Margin="15,20,15,0"
                              DefaultInteraction="DragPan"
-                             IsHorizontalZoomEnabled="True"                            
+                             IsHorizontalZoomEnabled="True"
+                             IsVerticalZoomEnabled="True"
                              Title="{Binding chartTitle}"
                              Subtitle=" "
                              
@@ -165,31 +166,47 @@
                 </ig:XamDataChart.DataContext>-->
                 <ig:XamDataChart.Axes>
                     <ig:NumericXAxis x:Name="xAxis"
-                                     MinimumValue="50"
-                                     MaximumValue="600"
-                                     Title="Frequency [MHz]"
+                                     Title="Wavelength [nm]"
                                      />
                     <!--MinimumValue="{Binding freqStart}"
                                      MaximumValue="{Binding freqStop}"
                                      Title="Frequency [MHz]"
                                       />-->
                     <ig:NumericYAxis x:Name="yAxis" 
-                                     MinimumValue="-100"
-                                     MaximumValue="{Binding referenceTop}"
-                                     Title="Power [dBm]"
+                                     Title="Frequency [MHz]"
                                      />
 
                 </ig:XamDataChart.Axes>
                 <ig:XamDataChart.Series>
-                    <ig:ScatterLineSeries Thickness="2"
-                                          MarkerType="None"
+                    <ig:ScatterSeries Thickness="1"
+                                          
                                    ItemsSource="{Binding dataModel}"
-                                   YMemberPath="Y"
-                                   XMemberPath="X"
+                                   YMemberPath="freq"
+                                   XMemberPath="lamd"
                                    XAxis="{Binding ElementName=xAxis}"
                                    YAxis="{Binding ElementName=yAxis}"
-                                   
-                                   ></ig:ScatterLineSeries>
+                                  
+                                   >
+                        <!--<ig:ScatterAreaSeries.ColorScale>
+                            <ig:CustomPaletteColorScale 
+                            x:Name="ColorScale" 
+                            MinimumValue="-70"
+                            MaximumValue="-30" InterpolationMode="InterpolateRGB">
+                                <ig:CustomPaletteColorScale.Palette>
+                                    <Color>#FF8670CB</Color>
+                                    <Color>#FF513E8C</Color>
+                                    <Color>#FF003F5E</Color>
+                                    <Color>#FF0C6B99</Color>
+                                    <Color>#FF1AA1E2</Color>
+                                    <Color>#FF4AC4FF</Color>
+                                    <Color>#FFB5CC2E</Color>
+                                    <Color>#FFFFD034</Color>
+                                    <Color>#FFFC8612</Color>
+                                    <Color>#FFED4840</Color>
+                                </ig:CustomPaletteColorScale.Palette>
+                            </ig:CustomPaletteColorScale>
+                        </ig:ScatterAreaSeries.ColorScale>-->
+                    </ig:ScatterSeries>
                 </ig:XamDataChart.Series>
             </ig:XamDataChart>
         </Grid>

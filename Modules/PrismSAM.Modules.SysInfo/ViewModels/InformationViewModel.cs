@@ -37,6 +37,21 @@ namespace PrismSAM.Modules.SysInfo.ViewModels
         private TimeSpan updateTimeSpan;
 
         private IEventAggregator _ea;
+
+        //IQS recorder infomation
+        private string _IQS_TriggerMode;
+        public string IQS_TriggerMode
+        {
+            get { return _IQS_TriggerMode; }
+            set { SetProperty(ref _IQS_TriggerMode, value); }
+        }
+
+        private string _IQS_TriggerSource;
+        public string IQS_TriggerSource
+        {
+            get { return _IQS_TriggerSource; }
+            set { SetProperty(ref _IQS_TriggerSource, value); }
+        }
         #endregion
 
         #region Constructor
@@ -55,7 +70,8 @@ namespace PrismSAM.Modules.SysInfo.ViewModels
         private void UpdateInfo(object sender, EventArgs e)
         {
             GetSWPInfo();
-            GetCTLInfo();
+            //GetCTLInfo();
+            Get_Recorder_Info();
         }
         #endregion
 
@@ -78,6 +94,12 @@ namespace PrismSAM.Modules.SysInfo.ViewModels
                     _ea.GetEvent<CTL_Events>().Publish(BS_isEnabled);
                 }
             }
+        }
+
+        public void Get_Recorder_Info()
+        {
+            IQS_TriggerMode = (IQRecorderMode.IQS_Config.TRGMode == TRGMode_TypeDef.Fixed) ? "Fix points mode" : "Continuous mode";
+            IQS_TriggerSource = (IQRecorderMode.IQS_Config.TRGSrc == BBTRG_TypeDef.BBTRG_SOFT) ? "Software" : "External";
         }
         #endregion
     }

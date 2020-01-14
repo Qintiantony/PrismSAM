@@ -6,9 +6,9 @@ using System.Linq;
 
 namespace PrismSAM.Modules.IQRecorder.ViewModels
 {
-    public class RecorderViewViewModel : BindableBase
+    public class RecorderViewModel : BindableBase
     {
-        public RecorderViewViewModel()
+        public RecorderViewModel()
         {
 
         }

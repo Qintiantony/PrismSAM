@@ -142,11 +142,13 @@
                         Orientation="Horizontal"
                         FlowDirection="RightToLeft"
                         Margin="15,20,0,0">
-                
+                <Button Content="Save" Width="80" Margin="15,0,0,0"
+                        x:Name="SaveBtn" Click="SaveBtn_Click"/>
                 <ToggleButton Content="Pause" Width="80" 
                               Margin="15,0,0,0"
                               IsChecked="{Binding isPausedBtn}"/>
-                <Button Content="Default" Width="80" Margin="15,0,0,0"/>
+                <Button Content="Default" Width="80" Margin="15,0,0,0"
+                        Command="{Binding RestoreDefaultCommand}"/>
                 <ToggleButton Content="BS AutoLock" Width="90" 
                               Margin="15,0,0,0"
                               IsChecked="{Binding BS_isEnabled,Mode=OneWay}"
@@ -154,10 +156,12 @@
                               />
             </StackPanel>
 
-            <ig:XamDataChart x:Name="Chart1" Grid.Row="1" 
+            <Grid Grid.Row="1" x:Name="DataChartGrid"
                              Grid.Column="0"
                              Grid.ColumnSpan="2"
-                             Margin="15,20,15,0"
+                             >
+                <ig:XamDataChart x:Name="Chart1" 
+                             Margin="15,20,15,5"
                              DefaultInteraction="DragPan"
                              IsHorizontalZoomEnabled="True"                            
                              Title="{Binding chartTitle}"
@@ -197,6 +201,7 @@
                                    ></ig:ScatterLineSeries>
                 </ig:XamDataChart.Series>
             </ig:XamDataChart>
+            </Grid>
         </Grid>
     </DockPanel>
 </UserControl>
