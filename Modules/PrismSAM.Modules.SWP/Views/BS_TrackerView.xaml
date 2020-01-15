@@ -138,7 +138,9 @@
                         Orientation="Horizontal"
                         FlowDirection="RightToLeft"
                         Margin="15,20,0,0">
-
+                
+                <Button Content="Save" Width="80" Margin="15,0,0,0"
+                        x:Name="SaveBtn" Click="SaveBtn_Click"/>
                 <ToggleButton Content="Pause" Width="80" 
                               Margin="15,0,0,0"
                               IsChecked="{Binding isPausedBtn}"/>
@@ -149,15 +151,18 @@
                               Command="{Binding Enable_BS_Command}"
                               />
             </StackPanel>
-
-            <ig:XamDataChart x:Name="Chart1" Grid.Row="1" 
+            <Grid Grid.Row="1" x:Name="DataChartGrid"
+                             Grid.Column="0"
+                             Grid.ColumnSpan="2"
+                             >
+                <ig:XamDataChart x:Name="Chart1" Grid.Row="1" 
                              Grid.Column="0"
                              Grid.ColumnSpan="2"
                              Margin="15,20,15,0"
                              DefaultInteraction="DragPan"
                              IsHorizontalZoomEnabled="True"
                              IsVerticalZoomEnabled="True"
-                             Title="{Binding chartTitle}"
+                             Title="Brillouin Scattering Mode Tracker"
                              Subtitle=" "
                              
                              >
@@ -178,15 +183,18 @@
 
                 </ig:XamDataChart.Axes>
                 <ig:XamDataChart.Series>
-                    <ig:ScatterSeries Thickness="1"
-                                          
+                    <ig:BubbleSeries 
                                    ItemsSource="{Binding dataModel}"
                                    YMemberPath="freq"
                                    XMemberPath="lamd"
                                    XAxis="{Binding ElementName=xAxis}"
                                    YAxis="{Binding ElementName=yAxis}"
-                                  
+                                   RadiusMemberPath="powr"
+                                   ShowDefaultTooltip="False"
                                    >
+                        <ig:BubbleSeries.RadiusScale>
+                            <ig:SizeScale  IsLogarithmic="False" MinimumValue="5" MaximumValue="25"  />
+                        </ig:BubbleSeries.RadiusScale>
                         <!--<ig:ScatterAreaSeries.ColorScale>
                             <ig:CustomPaletteColorScale 
                             x:Name="ColorScale" 
@@ -206,9 +214,10 @@
                                 </ig:CustomPaletteColorScale.Palette>
                             </ig:CustomPaletteColorScale>
                         </ig:ScatterAreaSeries.ColorScale>-->
-                    </ig:ScatterSeries>
+                    </ig:BubbleSeries>
                 </ig:XamDataChart.Series>
             </ig:XamDataChart>
+            </Grid>
         </Grid>
     </DockPanel>
 </UserControl>
