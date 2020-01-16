@@ -114,11 +114,15 @@ namespace PrismSAM.Modules.SWP.Models
             {
                 if (CTL_Connection.BS_Catch_enabled && CTL_Connection.socketConnectionStatus && !CTL_Connection.BS_isCatched)
                 {
-                    CTL_Connection.SendCommand(CTL_Commands.ctl_scan_pause);
+                    if (CTL_Connection.BS_PauseWhenCatched)
+                    {
+                        CTL_Connection.SendCommand(CTL_Commands.ctl_scan_pause);
+                        CTL_Connection.BS_Catch_enabled = false;
+                        _ea.GetEvent<CTL_Events>().Publish(false);
+                    }
+                    
                     CTL_Connection.BS_isCatched = true;
-                    CTL_Connection.BS_Catch_enabled = false;
                     var lambdaString = CTL_Connection.SendCommand(CTL_Commands.ctl_lambda);
-                    _ea.GetEvent<CTL_Events>().Publish(false);
                     _ea.GetEvent<BS_CatchedEvent>().Publish(new BS_TrackPoints
                     {
                         freq = freq_buffer/1e6,

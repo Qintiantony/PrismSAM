@@ -22,6 +22,7 @@ namespace PrismSAM.Core
         //TODO: move to BS control module
         public static bool BS_Catch_enabled = false;
         public static bool BS_isCatched = false;
+        public static bool BS_PauseWhenCatched = false;
         //TODO: The threshold is set to be -100 for test event aggregator
         public static double BS_Threshold = -70;
         //public static double BS_Threshold = -100;

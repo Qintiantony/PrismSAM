@@ -5,7 +5,7 @@
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:igRibbon="http://infragistics.com/Ribbon"
         xmlns:igDock ="http://infragistics.com/DockManager"
-        xmlns:ig ="http://schemas.infragistics.com/xaml/wpf"
+        xmlns:ig ="http://schemas.infragistics.com/xaml"
         xmlns:core ="clr-namespace:PrismSAM.Core;assembly=PrismSAM.Core"
         prism:ViewModelLocator.AutoWireViewModel="True"
         Title="{Binding Title}" Height="900" Width="1440"
@@ -37,49 +37,73 @@
             </igRibbon:XamRibbon.Tabs>
         </igRibbon:XamRibbon>
     </Grid>-->
-    <igDock:XamDockManager Name="xamDockManager1">
-        <igDock:DocumentContentHost>
-            <igDock:SplitPane>
-                <igDock:TabGroupPane SelectionChanged="TabGroupPane_SelectionChanged" x:Name="ModuleTabGroupPane">
-                    <igDock:ContentPane prism:RegionManager.RegionName="{x:Static core:RegionNames.SpectrumRegion}"
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <ig:XamMenu x:Name="MainMenu" 
+                VerticalAlignment="Top"
+                MenuOrientation="Horizontal">
+            <ig:XamMenuItem Header="File" Width="55">
+                
+            </ig:XamMenuItem>
+            <ig:XamMenuSeparator/>
+            <ig:XamMenuItem Header="Edit" Width="55">
+
+            </ig:XamMenuItem>
+            <ig:XamMenuSeparator/>
+            <ig:XamMenuItem Header="Config" Width="55" SubmenuPreferredLocation="Left">
+                <ig:XamMenuItem Header="Pause when BS catched" 
+                                IsCheckable="True" 
+                                IsChecked="{Binding PauseWhenBSCatchedBtn, Mode=TwoWay}"/>
+            <ig:XamMenuSeparator/>
+            </ig:XamMenuItem>
+        </ig:XamMenu>
+        <igDock:XamDockManager Name="xamDockManager1" Grid.Row="1">
+            <igDock:DocumentContentHost>
+                <igDock:SplitPane>
+                    <igDock:TabGroupPane SelectionChanged="TabGroupPane_SelectionChanged" x:Name="ModuleTabGroupPane">
+                        <igDock:ContentPane prism:RegionManager.RegionName="{x:Static core:RegionNames.SpectrumRegion}"
                                         Header="Spectrum Analyzer"
                                         Image="/Assets/Icons/057-wave.png"
                                         AllowClose="False"
                                         >
-                    </igDock:ContentPane>
-                    <igDock:ContentPane prism:RegionManager.RegionName="{x:Static core:RegionNames.BS_TrackerRegion}"
+                        </igDock:ContentPane>
+                        <igDock:ContentPane prism:RegionManager.RegionName="{x:Static core:RegionNames.BS_TrackerRegion}"
                                         Header="BS Tracker       "
                                         Image="/Assets/Icons/054-signal.png"
                                         AllowClose="False"
                                         />
-                    <igDock:ContentPane prism:RegionManager.RegionName="{x:Static core:RegionNames.RecorderRegion}"
+                        <igDock:ContentPane prism:RegionManager.RegionName="{x:Static core:RegionNames.RecorderRegion}"
                                         Header="IQ Recorder      "
                                         Image="/Assets/Icons/054-signal.png"
                                         AllowClose="False"
                                         />
-                </igDock:TabGroupPane>
-            </igDock:SplitPane>
-        </igDock:DocumentContentHost>
-        <igDock:XamDockManager.Panes>
-            <igDock:SplitPane Width="320" SplitterOrientation="Horizontal" 
+                    </igDock:TabGroupPane>
+                </igDock:SplitPane>
+            </igDock:DocumentContentHost>
+            <igDock:XamDockManager.Panes>
+                <igDock:SplitPane Width="320" SplitterOrientation="Horizontal" 
                               igDock:XamDockManager.InitialLocation="DockedRight">
-                <igDock:TabGroupPane igDock:SplitPane.RelativeSize="100,100">
-                    <igDock:ContentPane prism:RegionManager.RegionName="{x:Static core:RegionNames.ConnectionRegion}"
+                    <igDock:TabGroupPane igDock:SplitPane.RelativeSize="100,100">
+                        <igDock:ContentPane prism:RegionManager.RegionName="{x:Static core:RegionNames.ConnectionRegion}"
                                         Header="Connection Wizard"
                                         Image="../Assets/Icons/109-link.png"
                                         AllowClose="False"/>
-                    <igDock:ContentPane prism:RegionManager.RegionName="{x:Static core:RegionNames.ConnectCTLRegion}"
+                        <igDock:ContentPane prism:RegionManager.RegionName="{x:Static core:RegionNames.ConnectCTLRegion}"
                                         Header="Toptica CTL Server"
                                         Image="../Assets/Icons/119-cube.png"
                                         AllowClose="False"/>
-                </igDock:TabGroupPane>
-                <igDock:TabGroupPane igDock:SplitPane.RelativeSize="100,150">
-                    <igDock:ContentPane prism:RegionManager.RegionName="{x:Static core:RegionNames.InformationRegion}"
+                    </igDock:TabGroupPane>
+                    <igDock:TabGroupPane igDock:SplitPane.RelativeSize="100,150">
+                        <igDock:ContentPane prism:RegionManager.RegionName="{x:Static core:RegionNames.InformationRegion}"
                                         Header="System Information"
                                         Image="../Assets/Icons/109-link.png"
                                         AllowClose="False"/>
-                </igDock:TabGroupPane>
-            </igDock:SplitPane>
-        </igDock:XamDockManager.Panes>
-    </igDock:XamDockManager>
+                    </igDock:TabGroupPane>
+                </igDock:SplitPane>
+            </igDock:XamDockManager.Panes>
+        </igDock:XamDockManager>
+    </Grid>
 </igRibbon:XamRibbonWindow>

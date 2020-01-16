@@ -1,4 +1,5 @@
-﻿using Infragistics.Controls.Charts;
+﻿using CsvHelper;
+using Infragistics.Controls.Charts;
 using Prism;
 using Prism.Commands;
 using Prism.Events;
@@ -9,6 +10,7 @@ using PrismSAM.Core.Events;
 using PrismSAM.Modules.SWP.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Windows.Input;
 using static PrismSAM.Core.Declaration;
@@ -134,12 +136,19 @@ namespace PrismSAM.Modules.SWP.ViewModels
             _ea = ea;
             ea.GetEvent<CTL_Events>().Subscribe(BS_isEnabled_received);
             ea.GetEvent<SweepPauseEvent>().Subscribe(SweepPause_received);
+
             // Dummy data model for test only
             //dataModel = new DummyDataModel();
+
+            //Initialize Commands
             dataModel = new GetSweepDataModel(_ea);
             ApplyCommand = new DelegateCommand(ApplyConfiguration);
             Enable_BS_Command = new DelegateCommand(Enable_BS);
             RestoreDefaultCommand = new DelegateCommand(RestoreDefault);
+            Save_CSV_Command = new DelegateCommand(Save_CSV);
+            AUXS_ON_Command = new DelegateCommand(AUXS_ON);
+            AUXS_OFF_Command = new DelegateCommand(AUXS_OFF);
+
             freqStart = SweepMode.swpDefaultConfig.StartFreq_Hz/1e6;
             freqStop = SweepMode.swpDefaultConfig.StopFreq_Hz/1e6;
             freqStartTextbox = freqStart;
@@ -164,6 +173,9 @@ namespace PrismSAM.Modules.SWP.ViewModels
         public DelegateCommand ApplyCommand { get; private set; }
         public DelegateCommand Enable_BS_Command { get; private set; }
         public DelegateCommand RestoreDefaultCommand { get; private set; }
+        public DelegateCommand Save_CSV_Command { get; private set; }
+        public DelegateCommand AUXS_ON_Command { get; private set; }
+        public DelegateCommand AUXS_OFF_Command { get; private set; }
         #endregion
 
         #region Command Methods
@@ -188,6 +200,30 @@ namespace PrismSAM.Modules.SWP.ViewModels
             SweepMode.swpConfig = SweepMode.swpDefaultConfig;
             SweepMode.Configure_SWP_Standard();
             dataModel.GenerateData(SweepMode.swpConfig.TracePoints);
+        }
+
+        private void Save_CSV()
+        {
+            string CSV_filename = "Spec-"+DateTime.Now.ToString("yyyy-MM-dd--HH-mm") + ".csv";
+            using (var writer = new StreamWriter(@"E:\CloudStation\CloudStation\Python Scripts\SAMTEMP\CSV\" + CSV_filename))
+            {
+                using (var csv = new CsvWriter(writer))
+                {
+                    csv.WriteRecords(dataModel);
+                }
+            }
+            
+        }
+
+        private void AUXS_ON()
+        {
+            AUXSMode.AUXS_Config.TxOperationMode = TxOprtMode_Typedef.OPRT_CONTSW;
+            AUXSMode.AUXS_Apply();
+        }
+
+        private void AUXS_OFF()
+        {
+            AUXSMode.AUXS_Off();
         }
         #endregion
         #region Event Handlers

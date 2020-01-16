@@ -1,6 +1,7 @@
 ﻿using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
+using PrismSAM.Core;
 using PrismSAM.Core.Events;
 
 namespace PrismSAM.ViewModels
@@ -8,6 +9,13 @@ namespace PrismSAM.ViewModels
     public class MainWindowViewModel : BindableBase
     {
         #region Propeties
+
+        public bool PauseWhenBSCatchedBtn
+        {
+            get { return CTL_Connection.BS_PauseWhenCatched; }
+            set { SetProperty(ref CTL_Connection.BS_PauseWhenCatched, value); }
+        }
+
         private string _title = "Prism SAM Utility";
         public string Title
         {

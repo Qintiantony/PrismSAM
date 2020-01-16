@@ -122,6 +122,14 @@
                     Grid.ColumnSpan="3"
                     Padding="5" Margin="15" Width="180" Grid.Row="3"
                     Grid.Column="3"/>
+            <!--<Button Content="AUXS ON" Command="{Binding AUXS_ON_Command}"
+                    Grid.ColumnSpan="3"
+                    Padding="5" Margin="0" Width="180" Grid.Row="4"/>
+            <Button Content="AUXS OFF" Command="{Binding AUX_OFF_Command}"
+                    x:Name="AUXS_OFF_Btn"
+                    Grid.ColumnSpan="3"
+                    Padding="5" Margin="0" Width="180" Grid.Row="4"
+                    Grid.Column="3"/>-->
             <TextBlock Text="{Binding operationStatus}"/>
         </Grid>
         <Grid DockPanel.Dock="Top" MinWidth="630">
@@ -142,13 +150,16 @@
                         Orientation="Horizontal"
                         FlowDirection="RightToLeft"
                         Margin="15,20,0,0">
-                <Button Content="Save" Width="80" Margin="15,0,0,0"
-                        x:Name="SaveBtn" Click="SaveBtn_Click"/>
+                <Button Content="Save CSV" Width="80" Margin="15,0,0,0"
+                        x:Name="SaveCsvBtn" Command="{Binding Save_CSV_Command}"/>
+                <Button Content="Save Fig" Width="80" Margin="15,0,0,0"
+                        x:Name="SaveFigBtn" Click="SaveBtn_Click"/>
                 <ToggleButton Content="Pause" Width="80" 
                               Margin="15,0,0,0"
                               IsChecked="{Binding isPausedBtn}"/>
                 <Button Content="Default" Width="80" Margin="15,0,0,0"
                         Command="{Binding RestoreDefaultCommand}"/>
+                
                 <ToggleButton Content="BS AutoLock" Width="90" 
                               Margin="15,0,0,0"
                               IsChecked="{Binding BS_isEnabled,Mode=OneWay}"
