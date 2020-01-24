@@ -28,6 +28,7 @@ namespace PrismSAM.Modules.SWP.ViewModels
             dataModel = new BS_Tracker();
             ea.GetEvent<BS_CatchedEvent>().Subscribe(BS_CatchedReceived);
             Save_CSV_Command = new DelegateCommand(Save_CSV);
+            ClearTrackCommand = new DelegateCommand(ClearTrack);
         }
         #endregion
 
@@ -37,7 +38,8 @@ namespace PrismSAM.Modules.SWP.ViewModels
         }
 
         #region Commands
-        public DelegateCommand Save_CSV_Command { get; set; }
+        public DelegateCommand Save_CSV_Command { get; private set; }
+        public DelegateCommand ClearTrackCommand { get; private set; }
 
         #endregion
         #region Command Methods
@@ -54,6 +56,11 @@ namespace PrismSAM.Modules.SWP.ViewModels
                 }
             }
 
+        }
+
+        private void ClearTrack()
+        {
+            dataModel.Clear();
         }
         #endregion
     }
